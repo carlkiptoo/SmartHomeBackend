@@ -28,4 +28,9 @@ class RoomLightManager {
         const roomLights = this.lightController.getLightsByRoom(room);
         roomLights.forEach(light => light.setColor(color));
     }
+
+    getRoomStatus(room) {
+        const roomLights = this.lightController.getLightsByRoom(room);
+        return roomLights.map(light => light.getStatus());
+    }
 }
