@@ -53,5 +53,22 @@ class LightSystem {
         return false;
     }
 
-    
+    //Room controls
+
+    turnOnRoom(room) {
+        this.roomLightManager.turnOnRoom(room);
+    }
+    turnOffRoom(room) {
+        this.roomLightManager.turnOffRoom(room);
+    }
+
+    setRoomBrightnessLevel(room, brightness) {
+        this.roomLightManager.setRoomBrightnessLevel(room, brightness);
+    }
+
+    setRoomColor(room, color) {
+        this.roomLightManager.setRoomColor(room, color);
+    }
+
+
 }
