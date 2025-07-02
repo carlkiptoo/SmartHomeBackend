@@ -19,4 +19,16 @@ class LightController {
         }
         return false;
     }
+
+    getLight(lightId) {
+        return this.lights.get(lightId);
+    }
+
+    getAllLights() {
+        return Array.from(this.lights.values());
+    }
+
+    getLightsByRoom(room) {
+        return this.getAllLights().filter(light => light.room === room);
+    }
 }
