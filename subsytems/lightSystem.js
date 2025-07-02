@@ -21,4 +21,26 @@ class Light {
         this.isOn = false;
         console.log(`Light ${this.lightId} in ${this.room} turned OFF`);
     }
+
+    setBrightnessLevel(level) {
+        if (!this.isDimmable) {
+            console.log(`Light ${this.lightId} in ${this.room} is not dimmable`);
+            return false;
+        }
+
+        if ( level > 0 && level <= 100) {
+            this.brightness = level;
+            if (level > 0 && !this.isOn) {
+                this.isOn = true;
+            } else if (level === 0){
+                this.isOn = false;
+            }
+
+            console.log(`Light ${this.lightId} in ${this.room} brightness set to ${level}`);
+            return true;
+        } else {
+            console.log('Brightness level must be between 0 and 100');
+            return false;
+        }
+    }
 }
