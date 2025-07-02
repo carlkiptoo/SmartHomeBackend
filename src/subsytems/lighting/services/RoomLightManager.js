@@ -14,4 +14,13 @@ class RoomLightManager {
         roomLights.forEach(light => light.turnOff());
         console.log(`Lights in ${room} turned OFF`);
     }
+
+    setRoomBrightnessLevel(room, brightness) {
+        const roomLights = this.lightController.getLightsByRoom(room);
+        roomLights.forEach(light => {
+            if (light.isDimmable) {
+                light.setBrightnessLevel(brightness);
+            }
+        });
+    }
 }
