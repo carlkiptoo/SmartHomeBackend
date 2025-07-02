@@ -24,4 +24,14 @@ class LightSystem {
         console.log(`Light ${lightId} not found`);
         return false;
     }
+
+    turnOffLight(lightId) {
+        const light = this.lightController.getLight(lightId);
+        if (light) {
+            light.turnOff();
+            return true;
+        }
+        console.log(`Light ${lightId} not found`);
+        return false;
+    }
 }
