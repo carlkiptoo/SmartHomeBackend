@@ -79,5 +79,20 @@ class LightSystem {
         return this.sceneManager.activateScene(sceneName);
     }
 
+    getLightStatus(lightId) {
+        const light = this.lightController.getLight(lightId);
+        return light ? light.getStatus() : null;
+    }
+
+    getRoomStatus(room) {
+        return this.roomLightManager.getRoomStatus(room);
+    }
+    getAllLightsStatus() {
+        return this.lightController.getAllLights().map(light => light.getStatus());
+    }
+    getAvailableScenes() {
+        return this.sceneManager.getScenes();
+    }
+
 
 }

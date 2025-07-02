@@ -36,7 +36,7 @@ class SceneManager {
         return true;
     }
 
-    getScene() {
+    getScenes() {
         return Array.from(this.scenes.keys());
     }
 
