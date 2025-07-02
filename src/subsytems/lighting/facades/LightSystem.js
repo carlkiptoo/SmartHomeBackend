@@ -10,4 +10,8 @@ class LightSystem {
     addLight(lightId, room, isDimmable = true) {
         return this.lightController.addLight(lightId, room, isDimmable);
     }
+
+    removeLight(lightId) {
+        return this.lightController.removeLight(lightId);
+    }
 }
