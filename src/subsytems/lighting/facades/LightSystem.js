@@ -71,4 +71,13 @@ class LightSystem {
     }
 
 
+    createScene(sceneName, lightSetting) {
+        this.sceneManager.createScene(sceneName, lightSetting);
+    }
+
+    activateScene(sceneName) {
+        return this.sceneManager.activateScene(sceneName);
+    }
+
+
 }
