@@ -43,4 +43,15 @@ class LightSystem {
         console.log(`Light ${lightId} not found`);
         return false;
     }
+
+    setLightColor(lightId, color){
+        const light = this.lightController.getLight(lightId);
+        if (light) {
+            return light.setColor(color);
+        }
+        console.log(`Light ${lightId} not found`);
+        return false;
+    }
+
+    
 }
