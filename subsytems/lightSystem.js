@@ -14,6 +14,11 @@ class Light {
             this.brightness = 100;
         }
 
-        console.log(`Light ${this.lightId} in {this.room} turned ON`);
+        console.log(`Light ${this.lightId} in ${this.room} turned ON`);
+    }
+
+    turnOff(){
+        this.isOn = false;
+        console.log(`Light ${this.lightId} in ${this.room} turned OFF`);
     }
 }
