@@ -14,4 +14,14 @@ class LightSystem {
     removeLight(lightId) {
         return this.lightController.removeLight(lightId);
     }
+
+    turnOnLight(lightId) {
+        const light = this.lightController.getLight(lightId);
+        if (light) {
+            light.turnOn();
+            return true;
+        }
+        console.log(`Light ${lightId} not found`);
+        return false;
+    }
 }
