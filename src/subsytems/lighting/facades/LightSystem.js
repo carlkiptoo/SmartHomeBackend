@@ -94,5 +94,20 @@ class LightSystem {
         return this.sceneManager.getScenes();
     }
 
+    turnOffAllLights() {
+        this.lightController.getAllLights().forEach(light => light.turnOff());
+        console.log('All lights turned OFF');
+    }
+
+    emergencyMode() {
+        this.lightController.getAllLights().forEach(light => {
+            light.turnOn();
+            light.setBrightnessLevel(100);
+            light.setColor('red');
+        });
+        console.log('Emergency mode activated');
+    }
+
 
 }
+export default LightSystem;
