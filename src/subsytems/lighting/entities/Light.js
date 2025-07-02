@@ -43,4 +43,20 @@ class Light {
             return false;
         }
     }
+
+    setColor(color) {
+        this.color = color;
+        console.log(`Light ${this.lightId} in ${this.room} color set to ${color}`);
+    }
+
+    getStatus() {
+        return {
+            id: this.lightId,
+            room: this.room,
+            isOn: this.isOn,
+            brightness: this.brightness,
+            color: this.color,
+            isDimmable: this.isDimmable
+        };
+    }
 }
