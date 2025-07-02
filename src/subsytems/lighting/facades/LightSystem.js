@@ -34,4 +34,13 @@ class LightSystem {
         console.log(`Light ${lightId} not found`);
         return false;
     }
+
+    setLightBrightnessLevel(lightId, brightness) {
+        const light = this.lightController.getLight(lightId);
+        if (light) {
+            return light.setLightBrightnessLevel(brightness);
+        }
+        console.log(`Light ${lightId} not found`);
+        return false;
+    }
 }
