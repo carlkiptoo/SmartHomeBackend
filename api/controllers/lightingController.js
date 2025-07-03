@@ -110,6 +110,11 @@ export const lightingController = {
 
     getAvailableScenes: (req, res) => {
         res.json({message: 'Available scenes', scenes: lightSystem.getAvailableScenes()});
+    },
+
+    turnOffAllLights: (req, res) => {
+        lightSystem.turnOffAllLights();
+        res.json({message: 'All lights turned off'});
     }
 
 
