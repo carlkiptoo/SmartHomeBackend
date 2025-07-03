@@ -10,5 +10,15 @@ export const lightingController = {
         result
             ?res.status(201).json({message: 'Light added', light: result})
             :res.status(400).json({error: 'Light already exists'});
-    }
+    },
+
+    removeLight: (req, res) =>{
+        const {lightId} = req.params;
+        const success = lightSystem.removeLight(lightId);
+        success
+            ?res.status(200).json({message: 'Light removed'})
+            :res.status(404).json({error: 'Light not found'});
+    },
+
+    
 }
