@@ -1,3 +1,8 @@
+import Light from '../entities/Light.js';
+import LightController from '../services/LightController.js';
+import RoomLightManager from '../services/RoomLightManager.js';
+import SceneManager from '../services/SceneManager.js';
+
 class LightSystem {
     constructor() {
         this.lightController = new LightController();
@@ -8,7 +13,13 @@ class LightSystem {
     }
 
     addLight(lightId, room, isDimmable = true) {
-        return this.lightController.addLight(lightId, room, isDimmable);
+        if (this.lightId) {
+            console.log(`Light ${lightId} already exists`);
+            return false;
+        }
+        const light = new Light(lightId, room, isDimmable);
+        this.lightId = light;
+        return light;
     }
 
     removeLight(lightId) {
@@ -38,7 +49,7 @@ class LightSystem {
     setLightBrightnessLevel(lightId, brightness) {
         const light = this.lightController.getLight(lightId);
         if (light) {
-            return light.setLightBrightnessLevel(brightness);
+            return light.setBrightnessLevel(brightness);
         }
         console.log(`Light ${lightId} not found`);
         return false;
@@ -81,7 +92,18 @@ class LightSystem {
 
     getLightStatus(lightId) {
         const light = this.lightController.getLight(lightId);
-        return light ? light.getStatus() : null;
+        if (!light) {
+            console.log(`getLightstatus(): Light ${lightId} not found`);
+            return null;
+        }
+        return {
+            id: lightId,
+            room: light.room,
+            isOn: light.isOn,
+            brightness: light.brightness,
+            color: light.color,
+            isDimmable: light.isDimmable
+        }
     }
 
     getRoomStatus(room) {

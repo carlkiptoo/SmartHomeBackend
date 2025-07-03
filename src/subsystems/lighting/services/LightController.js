@@ -1,3 +1,4 @@
+import Light from '../entities/Light.js';
 class LightController {
     constructor() {
         this.lights = new Map();
@@ -32,3 +33,5 @@ class LightController {
         return this.getAllLights().filter(light => light.room === room);
     }
 }
+
+export default LightController;

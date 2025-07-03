@@ -45,8 +45,13 @@ class Light {
     }
 
     setColor(color) {
+        if (!color || typeof color !== 'string') {
+            console.log(`Invalid color: ${color}`);
+            return false;
+        }
         this.color = color;
         console.log(`Light ${this.lightId} in ${this.room} color set to ${color}`);
+        return true;
     }
 
     getStatus() {
@@ -60,3 +65,5 @@ class Light {
         };
     }
 }
+
+export default Light;

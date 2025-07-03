@@ -34,3 +34,5 @@ class RoomLightManager {
         return roomLights.map(light => light.getStatus());
     }
 }
+
+export default RoomLightManager;

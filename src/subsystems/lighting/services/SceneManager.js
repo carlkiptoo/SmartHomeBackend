@@ -17,7 +17,7 @@ class SceneManager {
         }
 
         scene.forEach(setting => {
-            const light = rhis.lightController.getLight(setting.lightId);
+            const light = this.lightController.getLight(setting.lightId);
             if  (light) {
                 if (setting.isOn) {
                     light.turnOn();
@@ -42,3 +42,5 @@ class SceneManager {
 
 
 }
+
+export default SceneManager;
