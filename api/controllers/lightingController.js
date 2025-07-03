@@ -92,6 +92,12 @@ export const lightingController = {
         const {room} = req.params;
         const status = lightSystem.getRoomStatus(room);
         res.json({message: 'Room status', status});
+    },
+
+    createScene: (req, res) =>{
+        const {sceneName, settings} = req.body;
+        lightSystem.createScene(sceneName, settings);
+        res.status(201).json({message: `'Scene created'`});
     }
 
 
