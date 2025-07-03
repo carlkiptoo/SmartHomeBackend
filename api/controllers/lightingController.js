@@ -36,7 +36,7 @@ export const lightingController = {
             :res.status(404).json({error: 'Light not turned off'});
     },
 
-    setBrightnessLevel: (req, res) =>{
+    setLightBrightnessLevel: (req, res) =>{
         const {lightId} = req.params;
         const {brightness} = req.body;
         const success = lightSystem.setBrightnessLevel(lightId, brightness);
@@ -45,7 +45,7 @@ export const lightingController = {
             :res.status(404).json({error: 'Brightness level not set'});
     },
 
-    setColor: (req, res) => {
+    setLightColor: (req, res) => {
         const {lightId} = req.params;
         const {color} = req.body;
         const success = lightSystem.setColor(lightId, color);
@@ -54,6 +54,13 @@ export const lightingController = {
             :res.status(404).json({error: 'Color not set'});
     },
 
+    getLightStatus:(req, res) =>{
+        const {lightId} = req.params;
+        const status = lightSystem.getLightStatus(lightId);
+        status
+            ?res.status(200).json({message: 'Light status', status})
+            :res.status(404).json({error: 'Light not found'});
+    },
     
 
     
