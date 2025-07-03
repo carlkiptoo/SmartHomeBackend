@@ -98,7 +98,15 @@ export const lightingController = {
         const {sceneName, settings} = req.body;
         lightSystem.createScene(sceneName, settings);
         res.status(201).json({message: `'Scene created'`});
-    }
+    },
+
+    activateScene: (req, res) => {
+        const {sceneName} = req.params;
+        const result = lightSystem.activateScene(sceneName);
+        result
+            ?res.status(200).json({message: 'Scene activated'})
+            :res.status(404).json({error: `Scene ${sceneName} not found`});
+    },
 
 
 
