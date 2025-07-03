@@ -79,6 +79,13 @@ export const lightingController = {
         const {brightness} = req.body;
         lightSystem.setRoomBrightnessLevel(room, brightness);
         res.json({message: `Room ${room} brightness set to ${brightness}`});
+    },
+
+    setRoomColor: (req, res) => {
+        const {room} = req.params;
+        const {color} = req.body;
+        lightSystem.setRoomColor(room, color);
+        res.json({message: `Room ${room} color set to ${color}`});
     }
 
 
