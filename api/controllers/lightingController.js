@@ -73,7 +73,14 @@ export const lightingController = {
         lightSystem.turnOffRoom(room);
         res.json({message: `Room ${room} turned off`});
     },
-    
+
+    setRoomBrightnessLevel: (req, res) => {
+        const {room} = req.params;
+        const {brightness} = req.body;
+        lightSystem.setRoomBrightnessLevel(room, brightness);
+        res.json({message: `Room ${room} brightness set to ${brightness}`});
+    }
+
 
 
     
