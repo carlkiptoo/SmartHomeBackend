@@ -108,6 +108,10 @@ export const lightingController = {
             :res.status(404).json({error: `Scene ${sceneName} not found`});
     },
 
+    getAvailableScenes: (req, res) => {
+        res.json({message: 'Available scenes', scenes: lightSystem.getAvailableScenes()});
+    }
+
 
 
     
