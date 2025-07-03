@@ -1,15 +1,63 @@
 import LightSystem from "../../src/subsystems/lighting/facades/LightSystem.js";
+import LightModel from "../models/LightModel.js";
 
 const lightSystem = new LightSystem();
 
-export const lightingController = {
-  addLight: (req, res) => {
-    const { lightId, room, isDimmable } = req.body;
+export const initializeLightsFromDB = async() => {
+    const lights = await LightModel.find({});
+    lights.forEach(lightDoc => {
+        const light = lightSystem.addLight(
+            lightDoc.lightId,
+            lightDoc.room,
+            lightDoc.isDimmable
+        );
 
-    const result = lightSystem.addLight(lightId, room, isDimmable);
-    result
-      ? res.status(201).json({ message: "Light added", light: result })
-      : res.status(400).json({ error: "Light already exists" });
+        if (lightDoc.isOn) {
+            light.turnOn();
+        }
+        if (lightDoc.brightness > 0) light.setBrightnessLevel(lightDoc.brightness);
+        if (lightDoc.color) light.setColor(lightDoc.color);
+    });
+    console.log('Lights initialized from DB');
+}
+
+export const lightingController = {
+  addLight: async (req, res) => {
+    const { lightId, room, isDimmable = true } = req.body;
+
+    try {
+      const light = lightSystem.addLight(lightId, room, isDimmable);
+      if (!light) {
+        return res
+          .status(400)
+          .json({ success: false, message: "Light already exists" });
+      }
+
+      const newLight = new LightModel({
+        lightId,
+        room,
+        isOn: light.isOn,
+        brightness: light.brightness,
+        color: light.color,
+        isDimmable: light.isDimmable,
+      });
+
+      await newLight.save();
+
+      return res
+        .status(201)
+        .json({ success: true, message: "Light added", data: newLight });
+    } catch (error) {
+      console.error("Error adding light:", error);
+
+      return res
+        .status(500)
+        .json({
+          success: false,
+          message: "Failed to add light",
+          error: error.message,
+        });
+    }
   },
 
   removeLight: (req, res) => {
@@ -20,40 +68,50 @@ export const lightingController = {
       : res.status(404).json({ error: "Light not found" });
   },
 
-  turnOnLight: (req, res) => {
+  turnOnLight: async(req, res) => {
     const { lightId } = req.params;
     const success = lightSystem.turnOnLight(lightId);
     if (success) {
+        await LightModel.updateOne({lightId}, {$set: {isOn: true}});
       res.status(200).json({ message: "Light turned on" });
     } else {
       res.status(404).json({ error: "Light not turned on" });
     }
   },
 
-  turnOffLight: (req, res) => {
+  turnOffLight: async (req, res) => {
     const { lightId } = req.params;
     const success = lightSystem.turnOffLight(lightId);
-    success
-      ? res.status(200).json({ message: "Light turned off" })
-      : res.status(404).json({ error: "Light not turned off" });
+    if (success) {
+        await LightModel.updateOne({lightId}, {$set: {isOn: false}});
+        res.status(200).json({ message: "Light turned off" });
+    } else {
+        res.status(404).json({ error: "Light not turned off" });
+    }
   },
 
-  setLightBrightnessLevel: (req, res) => {
+  setLightBrightnessLevel: async (req, res) => {
     const { lightId } = req.params;
     const { brightness } = req.body;
     const success = lightSystem.setLightBrightnessLevel(lightId, brightness);
-    success
-      ? res.status(200).json({ message: "Brightness level set" })
-      : res.status(404).json({ error: "Brightness level not set" });
+    if (success) {
+        await LightModel.updateOne({lightId}, {$set: {brightness}});
+        res.status(200).json({ message: "Brightness level set" });
+    } else {
+        res.status(404).json({ error: "Brightness level not set" });
+    }
   },
 
-  setLightColor: (req, res) => {
+  setLightColor: async (req, res) => {
     const { lightId } = req.params;
     const { color } = req.body;
     const success = lightSystem.setLightColor(lightId, color);
-    success
-      ? res.status(200).json({ message: "Color set" })
-      : res.status(404).json({ error: "Color not set" });
+    if (success) {
+        await LightModel.updateOne({lightId}, {$set: {color}});
+        res.status(200).json({ message: "Color set" });
+    } else {
+        res.status(404).json({ error: "Color not set" });
+    }
   },
 
   getLightStatus: (req, res) => {
@@ -64,28 +122,32 @@ export const lightingController = {
       : res.status(404).json({ error: "Light not found" });
   },
 
-  turnOnRoom: (req, res) => {
+  turnOnRoom: async(req, res) => {
     const { room } = req.params;
     lightSystem.turnOnRoom(room);
+    await LightModel.updateMany({room}, {$set: {isOn: true}});
     res.json({ message: `Room ${room} turned on` });
   },
 
-  turnOffRoom: (req, res) => {
+  turnOffRoom: async(req, res) => {
     const { room } = req.params;
     lightSystem.turnOffRoom(room);
+    await LightModel.updateMany({room}, {$set: {isOn: false}});
     res.json({ message: `Room ${room} turned off` });
   },
 
-  setRoomBrightnessLevel: (req, res) => {
+  setRoomBrightnessLevel: async(req, res) => {
     const { room } = req.params;
     const { brightness } = req.body;
+    await LightModel.updateMany({room}, {$set: {brightness}});
     lightSystem.setRoomBrightnessLevel(room, brightness);
     res.json({ message: `Room ${room} brightness set to ${brightness}` });
   },
 
-  setRoomColor: (req, res) => {
+  setRoomColor: async (req, res) => {
     const { room } = req.params;
     const { color } = req.body;
+    await LightModel.updateMany({room}, {$set: {color}});
     lightSystem.setRoomColor(room, color);
     res.json({ message: `Room ${room} color set to ${color}` });
   },
@@ -96,7 +158,7 @@ export const lightingController = {
     res.json({ message: "Room status", status });
   },
 
-  createScene: (req, res) => {
+  createScene: async (req, res) => {
     const { sceneName, lightSetting } = req.body;
 
     if (!sceneName || !lightSetting || typeof lightSetting !== "object") {
@@ -108,6 +170,7 @@ export const lightingController = {
 
     try {
       lightSystem.createScene(sceneName, lightSetting);
+      await LightModel.updateMany({sceneName}, {$set: {sceneName}});
       res.status(201).json({
         success: true,
         message: `Scene ${sceneName} created successfully`,
@@ -120,12 +183,15 @@ export const lightingController = {
     }
   },
 
-  activateScene: (req, res) => {
+  activateScene: async(req, res) => {
     const { sceneName } = req.params;
     const result = lightSystem.activateScene(sceneName);
-    result
-      ? res.status(200).json({ message: "Scene activated" })
-      : res.status(404).json({ error: `Scene ${sceneName} not found` });
+    if (result) {
+        await LightModel.updateMany({sceneName}, {$set: {sceneName}});
+        res.status(200).json({ message: "Scene activated" });
+    } else {
+        res.status(404).json({ error: `Scene ${sceneName} not found` });
+    }
   },
 
   getAvailableScenes: (req, res) => {
@@ -135,11 +201,13 @@ export const lightingController = {
     });
   },
 
-  turnOffAllLights: (req, res) => {
+  turnOffAllLights: async (req, res) => {
+    await LightModel.updateMany({}, {$set: {isOn: false}});
     lightSystem.turnOffAllLights();
     res.json({ message: "All lights turned off" });
   },
-  emergencyMode: (req, res) => {
+  emergencyMode: async (req, res) => {
+    await LightModel.updateMany({}, {$set: {isOn: true, brightness: 100, color: 'red'}});
     lightSystem.emergencyMode();
     res.json({ message: "Emergency mode activated" });
   },
@@ -149,3 +217,5 @@ export const lightingController = {
     res.json({ message: "All lights status", status });
   },
 };
+
+export default lightSystem;

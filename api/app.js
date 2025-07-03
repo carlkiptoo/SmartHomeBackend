@@ -3,7 +3,9 @@ import morgan from 'morgan';
 import lightingRoutes from './routes/lightingRoutes.js';
 import errorHandler from './middlewares/errorHandler.js';
 
+
 const app = express();
+
 
 app.use(express.json());
 app.use(morgan('dev'));

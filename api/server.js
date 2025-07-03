@@ -1,6 +1,8 @@
 import app from './app.js';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import { initializeLightsFromDB} from './controllers/lightingController.js';
+
 
 dotenv.config();
 
@@ -14,8 +16,10 @@ mongoose.connect(mongoURI).then(() => {
     })
 }).catch((err) => {
     console.log('Error connecting to MongoDB:', err);
-})
+});
 
-app.listen(port, () => {
+
+app.listen(port, async() => {
     console.log(`Server started on port ${port}`);
+    await initializeLightsFromDB();
 });
