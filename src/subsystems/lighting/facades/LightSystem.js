@@ -12,15 +12,10 @@ class LightSystem {
         console.log('Light system initialized');
     }
 
-    addLight(lightId, room, isDimmable = true) {
-        if (this.lightId) {
-            console.log(`Light ${lightId} already exists`);
-            return false;
-        }
-        const light = new Light(lightId, room, isDimmable);
-        this.lightId = light;
-        return light;
-    }
+   addLight(lightId, room, isDimmable = true) {
+    return this.lightController.addLight(lightId, room, isDimmable);
+}
+
 
     removeLight(lightId) {
         return this.lightController.removeLight(lightId);

@@ -5,6 +5,10 @@ class LightController {
     }
 
     addLight(lightId, room, isDimmable = true) {
+        if (this.lights.has(lightId)) {
+        console.log(`Light ${lightId} already exists`);
+        return false;
+    }
         const light = new Light(lightId, room);
         light.isDimmable = isDimmable;
         this.lights.set(lightId, light);
