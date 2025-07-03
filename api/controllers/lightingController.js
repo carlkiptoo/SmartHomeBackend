@@ -44,7 +44,18 @@ export const lightingController = {
             ?res.status(200).json({message: 'Brightness level set'})
             :res.status(404).json({error: 'Brightness level not set'});
     },
+
+    setColor: (req, res) => {
+        const {lightId} = req.params;
+        const {color} = req.body;
+        const success = lightSystem.setColor(lightId, color);
+        success
+            ?res.status(200).json({message: 'Color set'})
+            :res.status(404).json({error: 'Color not set'});
+    },
+
     
+
     
 
 
