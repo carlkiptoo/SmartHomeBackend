@@ -119,6 +119,11 @@ export const lightingController = {
     emergencyMode: (req, res) => {
         lightSystem.emergencyMode();
         res.json({message: 'Emergency mode activated'});
+    },
+
+    getAllLightsStatus: (req, res) => {
+        const status = lightSystem.getAllLightsStatus();
+        res.json({message: 'All lights status', status});
     }
 
 
