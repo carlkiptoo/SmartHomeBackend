@@ -5,12 +5,16 @@ class SceneManager {
     }
 
     createScene(sceneName, lightSetting) {
-        this.scenes.set(sceneName, lightSetting);
-        console.log(`Scene ${sceneName} created`);
+        const settingsArray = Object.entries(lightSetting).map(([lightId, setting]) => ({
+            lightId,
+            ...setting
+        }));
+        this.scenes.set(sceneName.toLowerCase(), settingsArray);
+        console.log(`Scene ${sceneName} created`)
     }
 
     activateScene(sceneName) {
-        const scene = this.scenes.get(sceneName);
+        const scene = this.scenes.get(sceneName.toLowerCase());
         if (!scene) {
             console.log(`Scene ${sceneName} not found`);
             return false;
