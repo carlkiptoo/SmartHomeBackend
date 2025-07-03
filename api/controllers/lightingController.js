@@ -115,6 +115,10 @@ export const lightingController = {
     turnOffAllLights: (req, res) => {
         lightSystem.turnOffAllLights();
         res.json({message: 'All lights turned off'});
+    },
+    emergencyMode: (req, res) => {
+        lightSystem.emergencyMode();
+        res.json({message: 'Emergency mode activated'});
     }
 
 
