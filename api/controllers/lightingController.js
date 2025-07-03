@@ -28,5 +28,14 @@ export const lightingController = {
             :res.status(404).json({error: 'Light not turned on'});
     },
 
-    
+    turnOffLight: (req, res) => {
+        const {lightId} = req.params;
+        const success = lightSystem.turnOffLight(lightId);
+        success
+            ?res.status(200).json({message: 'Light turned off'})
+            :res.status(404).json({error: 'Light not turned off'});
+    },
+    }
+
+
 }
