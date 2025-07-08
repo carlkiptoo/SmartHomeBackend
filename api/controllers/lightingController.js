@@ -167,10 +167,10 @@ export const lightingController = {
         message: "Invalid sceneName or lightSetting",
       });
     }
+    
 
     try {
-      lightSystem.createScene(sceneName, lightSetting);
-      await LightModel.updateMany({sceneName}, {$set: {sceneName}});
+      await lightSystem.createScene(sceneName, lightSetting);
       res.status(201).json({
         success: true,
         message: `Scene ${sceneName} created successfully`,

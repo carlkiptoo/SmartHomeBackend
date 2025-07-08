@@ -1,0 +1,7 @@
+// smarthome/jsconfig.json
+{
+  "compilerOptions": {
+    "baseUrl": "."
+  },
+  "include": ["src", "api"]
+}
